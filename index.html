@@ -491,11 +491,24 @@
         const rtdb = getDatabase(app);
 
         // PERSISTENT NAVIGATION LOGIC
-        window.globalNav = (targetId) => {
+window.globalNav = (targetId) => {
+            // 1. Force close the console and show the landing page
             document.getElementById('sb-console').style.display = 'none';
             document.getElementById('landing-view').style.display = 'block';
+            
+            // 2. MOBILE FIX: Close the hamburger menu automatically
+            const menu = document.getElementById('mobileMenu');
+            if (menu) {
+                const bsCollapse = bootstrap.Collapse.getInstance(menu) || new bootstrap.Collapse(menu, {toggle: false});
+                bsCollapse.hide();
+            }
+
+            // 3. Scroll logic
             if (targetId) {
-                document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+                const element = document.getElementById(targetId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }
             } else {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
@@ -504,6 +517,11 @@
         window.launchConsole = () => {
             document.getElementById('landing-view').style.display = 'none';
             document.getElementById('sb-console').style.display = 'block';
+                        const menu = document.getElementById('mobileMenu');
+            if (menu) {
+                const bsCollapse = bootstrap.Collapse.getInstance(menu) || new bootstrap.Collapse(menu, {toggle: false});
+                bsCollapse.hide();
+            }
             initLiveFeed();
         }
 
